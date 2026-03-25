@@ -1,0 +1,3 @@
+/home/zenardi/Documents/develop/sdc-c5-planning-starter/project/starter_files/CMakeFiles/spiral_planner.dir
+/home/zenardi/Documents/develop/sdc-c5-planning-starter/project/starter_files/CMakeFiles/edit_cache.dir
+/home/zenardi/Documents/develop/sdc-c5-planning-starter/project/starter_files/CMakeFiles/rebuild_cache.dir

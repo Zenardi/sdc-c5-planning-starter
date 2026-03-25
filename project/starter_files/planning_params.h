@@ -13,7 +13,7 @@
 #include <array>
 
 // Planning Constants
-#define P_NUM_PATHS 1                  // TODO - Num of paths (goals)
+#define P_NUM_PATHS 5                  // Num of paths (goals)
 #define P_LOOKAHEAD_MIN 8.0            // m
 #define P_LOOKAHEAD_MAX 20.0           // m
 #define P_LOOKAHEAD_TIME 1.5           // s
@@ -25,10 +25,10 @@
 #define P_SPEED_LIMIT 3.0              // m/s
 #define P_STOP_LINE_BUFFER 0.5         // m
 #define P_STOP_THRESHOLD_SPEED 0.02    // m/s
-#define P_REQ_STOPPED_TIME 1.0         // secs
+#define P_REQ_STOPPED_TIME 5.0         // secs
 #define P_LEAD_VEHICLE_LOOKAHEAD 20.0  // m
 #define P_REACTION_TIME 0.25           // secs
-#define P_NUM_POINTS_IN_SPIRAL 2       // TODO - Num of points in the spiral
+#define P_NUM_POINTS_IN_SPIRAL 15      // Num of points in the spiral
 #define P_STOP_THRESHOLD_DISTANCE \
   P_LOOKAHEAD_MIN / P_NUM_POINTS_IN_SPIRAL * 2  // m
 

@@ -192,7 +192,7 @@ class World(object):
                 traffic_light = self.player.get_traffic_light()
                 _tl_state = str(traffic_light.get_state())
             cur_junction_id = waypoint.get_junction().id
-            if (cur_junction_id == _prev_junction_id or cur_junction_id in not_junction or _tl_state is 'Green'):
+            if (cur_junction_id == _prev_junction_id or cur_junction_id in not_junction or _tl_state == 'Green'):
                 is_goal_junction = False;
             else:
                 _prev_junction_id = cur_junction_id
@@ -448,7 +448,7 @@ class HUD(object):
             behavior = 'STOPPED'
         self._info_text += ['Behavior: '+behavior]
         self._info_text += ['Prev Junction: '+str(_prev_junction_id)]
-        if _tl_state is not 'none':
+        if _tl_state != 'none':
             self._info_text += ['TL State: '+_tl_state]
         self._info_text += ['num waypoints: '+str(len(way_points))]
         num_spirals = len(spirals_x)
@@ -776,8 +776,7 @@ def SpawnNPC(client, world, args, offset_x, offset_y):
 
     return SpawnActor(blueprint, actor_spawn)
 
-@asyncio.coroutine
-def game_loop(args):
+async def game_loop(args):
     global update_cycle
     pygame.init()
     pygame.font.init()
@@ -815,7 +814,7 @@ def game_loop(args):
         start_time = world.hud.simulation_time
         
         while True:
-            yield from asyncio.sleep(0.01) # check if any data from the websocket
+            await asyncio.sleep(0.01) # check if any data from the websocket
 
             if controller.parse_events(client, world):
                 return
@@ -920,10 +919,9 @@ def get_data():
     update_cycle = True
 
 
-@asyncio.coroutine
-def ws_event(loop):
+async def ws_event(loop):
     while True:
-        yield from loop.run_in_executor(None, get_data)
+        await loop.run_in_executor(None, get_data)
 
 def main():
     argparser = argparse.ArgumentParser(
@@ -951,8 +949,8 @@ def main():
     argparser.add_argument(
         '--res',
         metavar='WIDTHxHEIGHT',
-        default='1280x720',
-        help='window resolution (default: 1280x720)')
+        default='1920x1080',
+        help='window resolution (default: 1920x1080)')
     argparser.add_argument(
         '--filter',
         metavar='PATTERN',
@@ -981,13 +979,15 @@ def main():
 
     #sio.connect('http://localhost:4567')
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     loop.run_until_complete(
-        asyncio.wait([
+        asyncio.gather(
             ws_event(loop),
             game_loop(args)
-        ])
+        )
     )
+    loop.close()
 
 if __name__ == '__main__':
 
